@@ -1,0 +1,55 @@
+services:
+  web-api:
+    image: aoirint/aoirint_mcping_server_web_api:latest
+    restart: always
+    environment:
+      MCPING_WEB_API_DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
+      MCPING_WEB_API_READ_API_KEY: ${MCPING_WEB_API_READ_API_KEY}
+      MCPING_WEB_API_WRITE_API_KEY: ${MCPING_WEB_API_WRITE_API_KEY}
+    ports:
+      - "${MCPING_WEB_API_HOST_PORT}:5000"
+    depends_on:
+      - postgres
+
+  bedrock-updater:
+    image: aoirint/aoirint_mcping_server_bedrock_updater:latest
+    restart: always
+    environment:
+      MCPING_BEDROCK_UPDATER_DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
+      MCPING_BEDROCK_UPDATER_INTERVAL: ${MCPING_BEDROCK_UPDATER_INTERVAL}
+    depends_on:
+      - postgres
+
+  java-updater:
+    image: aoirint/aoirint_mcping_server_java_updater:latest
+    restart: always
+    environment:
+      MCPING_JAVA_UPDATER_DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
+      MCPING_JAVA_UPDATER_INTERVAL: ${MCPING_JAVA_UPDATER_INTERVAL}
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - "${POSTGRES_DATA_ROOT}:/var/lib/postgresql/data"
+
+  migrate:
+    image: migrate/migrate:v4.15.2
+    command: "migrate version"
+    volumes:
+      - "./migrations:/migrations"
+    depends_on:
+      - postgres
+
+  # (Optional) adminer: Browser database management
+  adminer:
+    image: adminer:4.8.1
+    restart: always
+    ports:
+      - "${ADMINER_HOST_PORT}:8080"
+    depends_on:
+      - postgres
