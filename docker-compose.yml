@@ -1,6 +1,6 @@
 services:
   web-api:
-    image: aoirint/aoirint_mcping_server_web_api:0.1.1
+    image: aoirint/aoirint_mcping_server_web_api:0.1.6
     restart: always
     environment:
       MCPING_WEB_API_DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
@@ -12,7 +12,7 @@ services:
       - postgres
 
   bedrock-updater:
-    image: aoirint/aoirint_mcping_server_bedrock_updater:0.1.1
+    image: aoirint/aoirint_mcping_server_bedrock_updater:0.1.6
     restart: always
     environment:
       MCPING_BEDROCK_UPDATER_DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
@@ -21,7 +21,7 @@ services:
       - postgres
 
   java-updater:
-    image: aoirint/aoirint_mcping_server_java_updater:0.1.1
+    image: aoirint/aoirint_mcping_server_java_updater:0.1.6
     restart: always
     environment:
       MCPING_JAVA_UPDATER_DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
@@ -38,7 +38,7 @@ services:
       - "${POSTGRES_DATA_ROOT}:/var/lib/postgresql/data"
 
   migrate:
-    image: migrate/migrate:v4.15.2
+    image: migrate/migrate:v4.16.2
     command: "migrate version"
     volumes:
       - "./migrations:/migrations"
