@@ -1,6 +1,6 @@
 services:
   web-api:
-    image: aoirint/aoirint_mcping_server_web_api:0.2.1
+    image: aoirint/aoirint_mcping_server_web_api:0.2.2
     restart: always
     environment:
       - MCPING_WEB_API_DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD:?}@postgres:5432/postgres
@@ -10,7 +10,7 @@ services:
       - postgres
 
   bedrock-updater:
-    image: aoirint/aoirint_mcping_server_bedrock_updater:0.2.1
+    image: aoirint/aoirint_mcping_server_bedrock_updater:0.2.2
     restart: always
     environment:
       - MCPING_BEDROCK_UPDATER_DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD:?}@postgres:5432/postgres
@@ -19,7 +19,7 @@ services:
       - postgres
 
   java-updater:
-    image: aoirint/aoirint_mcping_server_java_updater:0.2.1
+    image: aoirint/aoirint_mcping_server_java_updater:0.2.2
     restart: always
     environment:
       - MCPING_JAVA_UPDATER_DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD:?}@postgres:5432/postgres
